@@ -17,8 +17,6 @@ import javax.swing.border.Border;
  */
 public class LeftMainPanel extends JPanel{
     private Box box ;//the main box of panel, verticle
-    private JButton buttonHome;
-    private JButton buttonUsers;
     private JButton buttonQuit;
     private JLabel leftTopLabel;
     private JLabel leftUserListLabel;
@@ -61,14 +59,11 @@ public class LeftMainPanel extends JPanel{
         
         this.add(box,BorderLayout.CENTER);
     }
-    public JButton getButtonHome(){
-        return buttonHome;
-    }
-    public JButton getButtonUsers(){
-        return buttonUsers;
-    }
+
     public JButton getButtonQuit(){
         return buttonQuit;
     }
-    
+    public JLabel getLeftUserListLabel(){
+        return leftUserListLabel;
+    }
 }

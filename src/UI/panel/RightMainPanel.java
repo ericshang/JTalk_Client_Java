@@ -43,7 +43,7 @@ public class RightMainPanel extends JPanel {
         box.setBorder(borderGroup);
         
         mainTxtLabel = new JLabel();
-        mainTxtLabel.setText("This is a very good moment and we all need to remember");
+        mainTxtLabel.setText("Happy Chatting!");
         
         box.add(mainTxtLabel, BorderLayout.NORTH);
         
@@ -53,7 +53,7 @@ public class RightMainPanel extends JPanel {
         box.add(Box.createVerticalStrut(2));
         
         JLabel messageLabel = mainArea.getMainTxtLabel();
-        messageLabel.setText("<html><p>Tom says: hello </p> <p> Frank says: world!</p></html>");
+        messageLabel.setText("");
         
         //adding the input panel in the right bottom
         inputPanel = new InputPanel();

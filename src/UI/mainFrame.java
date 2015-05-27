@@ -7,9 +7,18 @@ package UI;
 
 import UI.panel.LeftMainPanel;
 import UI.panel.RightMainPanel;
+import UdpConn.messageSender;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Event;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.util.ArrayList;
 import javax.swing.*;
 
 /**
@@ -22,7 +31,11 @@ public class mainFrame extends JFrame implements Runnable {
     
     private LeftMainPanel leftPanel;
     private RightMainPanel rightPanel;
-    
+    private JButton buttonSend;
+    private JTextField inputField;
+    private JLabel mainTxtLabel;
+    ArrayList<String> messageList = new ArrayList<String>(15);//used to store messgaes 
+    public JButton buttonQuit;
     
     public mainFrame(){
         super("JTalk!");
@@ -40,10 +53,40 @@ public class mainFrame extends JFrame implements Runnable {
     private void initComponents(){
         leftPanel = new LeftMainPanel();
         this.add(leftPanel,BorderLayout.WEST);
+        buttonQuit = leftPanel.getButtonQuit();
+        
+        buttonQuit.addActionListener(new ActionListener() {//quit program
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                dispose();
+            }
+        });
         
         rightPanel = new RightMainPanel();
         this.add(rightPanel,BorderLayout.EAST);
         rightPanel.getInputPanel().getInputField().requestFocusInWindow();//set focus to the inputField
+        
+        buttonSend = rightPanel.getInputPanel().getButtonSend();
+        buttonSend.addActionListener(new ActionListener() {//send msg
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                sendBtnActionPerformed(evt);
+            }
+        });
+        inputField = rightPanel.getInputPanel().getInputField();
+        inputField.addKeyListener(new KeyListener(){//send message
+            @Override
+            public void keyTyped(KeyEvent ke) {
+            }
+            @Override
+            public void keyPressed(KeyEvent ke) {   
+            }
+            @Override
+            public void keyReleased(KeyEvent ke) {
+                inputFieldKeyReleasedPerformed(ke);
+            }
+        });
+        mainTxtLabel = rightPanel.getMainArea().getMainTxtLabel();
         
         
         setVisible(true);
@@ -77,6 +120,66 @@ public class mainFrame extends JFrame implements Runnable {
     
     public RightMainPanel getRightPanel(){
         return rightPanel;
+    }
+    
+    
+    //actions
+    public void sendBtnActionPerformed(ActionEvent evt){
+            String msg = inputField.getText();        
+            messageSender sender = new messageSender();
+            Thread senderThread = new Thread(sender);
+            senderThread.start();
+            
+            sender.sendMessage(msg);
+            
+            if(messageList.size()>=15){
+                messageList.remove(0);
+            }
+            //print out msges
+            if(msg != null && msg.length()>0){
+                messageList.add(msg);
+            }
+            
+            mainTxtLabel.setText(printMessages(messageList));
+            inputField.setText(null);
+            
+            repaint();
+    }
+    
+    public void inputFieldKeyReleasedPerformed(KeyEvent ke){
+        if(ke.getKeyCode() == Event.ENTER){
+            String msg = inputField.getText();        
+            messageSender sender = new messageSender();
+            Thread senderThread = new Thread(sender);
+            senderThread.start();
+            
+            sender.sendMessage(msg);
+            
+            if(messageList.size()>=15){
+                messageList.remove(0);
+            }
+            //print out msges
+            if(msg != null && msg.length()>0){
+                messageList.add(msg);
+            }
+            
+            mainTxtLabel.setText(printMessages(messageList));
+            inputField.setText(null);
+            repaint();
+        }
+    }
+    
+    private String printMessages(ArrayList<String> msgs){
+        
+        String result ="<html>";
+        for(String msg : msgs){
+            if(msg == null || msg.length()<1)
+                continue;
+            result +=" <p>"+msg+"</p> ";
+            
+        }
+        result += "</html>";
+        return result;
     }
     
 }

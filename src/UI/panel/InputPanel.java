@@ -5,9 +5,15 @@
  */
 package UI.panel;
 
+import UdpConn.messageSender;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.JButton;
@@ -25,6 +31,7 @@ public class InputPanel extends JPanel {
     private Box box ;//the main box of panel, verticle
     JTextField inputField;
     JButton buttonSend;
+    private DatagramSocket clientSocket;
     
     public InputPanel(){
         super();
@@ -48,6 +55,8 @@ public class InputPanel extends JPanel {
         
         buttonSend = new JButton("Send");
         buttonSend.setPreferredSize(new Dimension(110,30));
+        
+        
         //hContainerBox.add(buttonSend);
         box.add(buttonSend);
         
