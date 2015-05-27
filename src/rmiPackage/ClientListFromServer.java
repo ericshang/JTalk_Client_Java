@@ -62,4 +62,15 @@ public class ClientListFromServer implements Runnable {
     public void removeClient(Client c)throws RemoteException{
         stub.removeClient(c);
     }
+    public void removeClientByIp(String ip) throws RemoteException{
+        stub.removeClientByIp(ip);
+    }
+    public ArrayList<String> getMessages()throws RemoteException{
+        return stub.getMessages();
+    }
+    public void setMessageToList(String msg) throws RemoteException{
+        stub.addMessageToList(msg);
+    }
+    
+    
 }
